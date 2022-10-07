@@ -1,17 +1,19 @@
 import json
 from itertools import cycle
-import time
 import pyodbc
+from utils.logger import LogGen
+
+LOGGER = LogGen.loggen()
 
 # Connect to DataBase
-print("Start connecting to db..")
+
+LOGGER.info("*** Start Connection ***")
 connect = pyodbc.connect('Driver={SQL Server};'
                          'Server=BAHRAM\BAHRAM;'
                          'Database=db;'
                          'Trusted_Connection=yes;')
 if connect:
-    time.sleep(2)
-    print("Connect successfully...")
+    LOGGER.info("*** Connection Successful ***")
 
 cursor = connect.cursor()
 # Fetch data as json
@@ -44,11 +46,11 @@ for row in result:
                         value_list.append(value)
 
 data = list(zip(cycle(column_list), value_list))
-result = [dict(data[i:i + len(column_list)]) for i in range(len(data))[::len(column_list)]]
+dict_result = [dict(data[i:i + len(column_list)]) for i in range(len(data))[::len(column_list)]]
 
-time.sleep(2)
-print("Start Inserting Data...")
-for i in result:
+LOGGER.info("*** Start Inserting Data ***")
+
+for i in dict_result:
     # cursor.execute(f'CREATE TABLE ProductOrder ( id int IDENTITY(1,1) PRIMARY KEY, {column[0]} nvarchar(50),{column[1]} nvarchar(50), {column[2]} nvarchar(50),{column[3]} int)')
     # connect.commit()
     cursor.execute(
@@ -63,9 +65,10 @@ for i in result:
         f"'{i['qty']}'," \
         f"'{i['price']}')"
     )
-time.sleep(2)
-print("Insert successfully.")
+
+LOGGER.info("*** Insert successfully ***")
+
 connect.commit()
 connect.close()
-time.sleep(2)
-print("Connection closed.")
+
+LOGGER.info("*** Connection closed ***")
