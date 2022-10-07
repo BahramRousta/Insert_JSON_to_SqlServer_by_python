@@ -1,0 +1,24 @@
+{
+    "product": [
+        {
+            "category": "vehicle",
+            "prod_list": [
+                {
+                    "name": "car",
+                    "qty": "10",
+                    "price": "25000"
+                }
+            ]
+        },
+        {
+            "category": "book",
+            "prod_list": [
+                {
+                    "name": "learn_python",
+                    "qty": "12",
+                    "price": "35000"
+                }
+            ]
+        }
+    ]
+}
